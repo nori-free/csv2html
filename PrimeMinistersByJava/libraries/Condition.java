@@ -20,6 +20,16 @@ public class Condition {
 	}
 
 	/**
+	* とにかくifを消すための愚行
+	* @params aConsumer 条件に対するコンシューマ
+	* @return True
+	*/
+	private boolean doit(Consumer<Condition> aConsumer) {
+		aConsumer.accept(this);
+		return true;
+	}
+
+	/**
 	* 条件が偽の時に実行する処理
 	*/
 	public void ifFalse(final Runnable aRunnable) {
@@ -58,10 +68,6 @@ public class Condition {
 	* 条件が正の時に実行する処理と偽の時に実行する処理
 	*/
 	public void ifThenElse(final Consumer<Condition> aConsumer, final Consumer<Condition> anotherConsumer) {
-		if(this.aCondition.get()){
-			aConsumer.accept(this);
-		}else{
-			anotherConsumer.accept(this);
-		}
+		Object result = this.aCondition.get()? this.doit(aConsumer): this.doit(anotherConsumer);
 	}
 }

@@ -1,14 +1,8 @@
 package primeministers;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
-import java.util.stream.Stream;
 
 public class Downloader extends IO {
 
@@ -38,30 +32,41 @@ public class Downloader extends IO {
 	* CSVをダウンロードする
 	*/
 	public void downloadCsv() {
-		try {
-			InputStream anInputStream = this.url.openStream();
-			InputStreamReader anInputStreamReader = new InputStreamReader(anInputStream);
-			BufferedReader aBufferedReader = new BufferedReader(anInputStreamReader);
-			Stream<String> aStream = aBufferedReader.lines();
-			aStream.forEach(System.out::println);
-			aBufferedReader.close();
-		} catch(IOException e) {
-			e.printStackTrace();
-			return;
-		}
+		List<String> listOfCSV = super.readTextFromURL(this.url);
+		Attributes.setBaseDirectory();
+		super.writeText(listOfCSV, Attributes.getBaseDirectory());
 		return;
 	}
 
+	/**
+	* 画像群をダウンロードする
+	*/
 	public void downloadImages() {
 		//
 	}
 
+	/**
+	* 画像群またはサムネイル画像群をダウンロードする
+	*/
+	public void downloadPictures(final int indexOfPictures) {
+		super.tuples().stream()
+		.map(aTuple->aTuple.values().get(indexOfPictures))
+		.forEach(item -> {
+			System.out.println(item);
+			//ダウンロード処理
+		});
+	}
+
+	/**
+	* サムネイル画像群をダウンロードする
+	*/
 	public void downloadThumbnails() {
 		//
 	}
 
 	public void perform() {
 		this.downloadCsv();
+		this.downloadImages();
 	}
 
 }

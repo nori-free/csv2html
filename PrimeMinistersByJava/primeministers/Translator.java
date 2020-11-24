@@ -13,11 +13,8 @@ public class Translator {
 
 	public Translator(Object aClassAttribute) {
 		Attributes.flushBaseDirectory();
-		// try {
-			// final Constructor<? extends Attributes> aConstructor =
-			this.inputTable = new Table(aClassAttribute, new Attributes("input"));
-			this.outputTable = new Table(aClassAttribute, new Attributes("output"));
-		// }
+		this.inputTable = new Table(aClassAttribute, new Attributes(aClassAttribute, "input"));
+		this.outputTable = new Table(aClassAttribute, new Attributes(aClassAttribute, "output"));
 	}
 
 	public String computeNumberOfDays() {
@@ -25,13 +22,13 @@ public class Translator {
 	}
 
 	public void execute() {
-		// System.out.println(aClassAttribute.toString() + " : " + aClassAttribute.getClass().getName());
 		Downloader aDownloader = new Downloader(this.inputTable);
 		aDownloader.perform();
 	}
 
-	public static void perform(Object aClassAttribute) {
-		final Translator aTranslator = new Translator(aClassAttribute);
-	}
+	// public static void perform(Object aClassAttribute) {
+	// 	final Translator aTranslator = new Translator(aClassAttribute);
+	// 	Translator.execute();
+	// }
 
 }
