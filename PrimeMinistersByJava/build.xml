@@ -4,8 +4,7 @@
 
 	<property name="homedir" value="${user.home}" />
 	<property name="package" value="primeMinistersByJava" />
-	<property name="utility" value="utility" />
-	<property name="packagenames" value="${package},${utility}" />
+	<property name="packagenames" value="${package}" />
 	<property name="destdir" value="./Classes" />
 	<property name="docdir" value="./JavaDoc" />
 	<property name="instdir" value="./${ant.project.name}.app/Contents/Resources/Java" />
@@ -34,7 +33,6 @@
 			<compilerarg value="-Xlint:all" />
 			<classpath>
 				<pathelement location="." />
-				<pathelement location="${utility}.jar" />
 			</classpath>
 		</javac>
 		<exec executable="date" spawn="false" />
@@ -45,7 +43,6 @@
 			jarfile="${package}.jar"
 			basedir="${destdir}"
 			manifest="${package}.mf">
-			<zipfileset src="${utility}.jar" />
 		</jar>
 		<exec executable="date" spawn="false" />
 	</target>
@@ -101,7 +98,6 @@
 			<bottom>${copyright}</bottom>
 			<classpath>
 				<pathelement location="." />
-				<pathelement location="${utility}.jar" />
 			</classpath>
 		</javadoc>
 		<exec executable="open">

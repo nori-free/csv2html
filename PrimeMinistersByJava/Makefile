@@ -18,5 +18,5 @@ doc:
 
 #zip:
 #	$(ANT) zip
-zip: clean
-	(cd ../ ; zip -r ./$(ARCHIVE).zip ./$(ARCHIVE)/)
+# zip: clean
+# 	(cd ../ ; zip -r ./$(ARCHIVE).zip ./$(ARCHIVE)/)

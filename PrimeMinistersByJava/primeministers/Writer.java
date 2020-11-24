@@ -1,4 +1,4 @@
-package PrimeMinistersByJava;
+package primeministers;
 
 import java.util.Calendar;
 import java.io.BufferedWriter;

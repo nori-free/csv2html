@@ -1,4 +1,4 @@
-package PrimeMinistersByJava;
+package primeministers;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
@@ -14,11 +14,11 @@ public class IO {
 	private Table table;
 
 	public Table table() {
-		return null;
+		return this.table;
 	}
 
-	public IO() {
-
+	public IO(Table aTable) {
+		this.table = aTable;
 	}
 
 }
