@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import libraries.Condition;
+
 public class Table {
 
 	private Object aClassAttribute;
@@ -27,7 +29,8 @@ public class Table {
 	}
 
 	public void add(final Tuple aTuple) {
-		//
+		// System.out.println(aTuple.values());
+		this.tuples().add(aTuple);
 	}
 
 	public Object aClassAttribute() {
@@ -55,6 +58,10 @@ public class Table {
 	}
 
 	public List<Tuple> tuples() {
+		new Condition(() -> this.tuples == null)
+		.ifTrue(() -> {
+			this.tuples = new ArrayList<Tuple>();
+		});
 		return this.tuples;
 	}
 

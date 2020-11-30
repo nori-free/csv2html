@@ -2,12 +2,12 @@ package primeministers;
 
 import java.util.List;
 
-public class Tuple extends Object {
+public class Tuple {
     private Attributes attributes;
     private List<String> values;
 
-    public Tuple(final Attributes instanceOfAttributes, final List<String> valueCollection) {
-        super();
+    public Tuple(final List<String> valueCollection) {
+		this.values = valueCollection;
         return;
     }
 

@@ -1,13 +1,16 @@
 package primeministers;
 
 import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.HashMap;
@@ -16,7 +19,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Stream;
 
-public class IO {
+public class IO extends Object {
+
+	/**
+	* CSVファイルのパス
+	*/
+	private String aCSVFilePath;
 
 	/**
 	* テーブルのインスタンス
@@ -32,16 +40,60 @@ public class IO {
 	}
 
 	/**
-	* URLからファイルを読み込み行をリストとして返却する
+	* 属性リスト
+	* @ return Attributes
+	*/
+	public Attributes attributes() {
+		return this.table().attributes();
+	}
+
+	/**
+	* CSVのファイルパスをセットする
+	* @param aFile ファイルオブジェクト
+	*/
+	public String csvFilePath() {
+		return this.aCSVFilePath;
+	}
+
+	/**
+	* URLから画像ファイルを読み込み行をリストとして返却する
 	* @params URL ダウンロードリンク
+	* @return BufferedImage
+	*/
+	public static BufferedImage readImageFromURL( URL anURL) {
+		BufferedImage anBufferedImage = null;
+		try {
+			anBufferedImage = ImageIO.read(anURL);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return anBufferedImage;
+	}
+
+	/**
+	* URLから画像ファイルを読み込み行をリストとして返却する
+	* @params URL ダウンロードリンク
+	* @return BufferedImage
+	*/
+	public static BufferedImage readImageFromURL(final String aString) {
+		URL anURL = null;
+		try {
+			anURL = new URL(aString);
+		} catch(MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return IO.readImageFromURL(anURL);
+	}
+
+	/**
+	* ファイルパスからファイルを読み込み行をリストとして返却する
+	* @params String ファイルパス
 	* @return 行を格納したリスト
 	*/
-	public List<String> readTextFromURL(final URL aURL) {
+	public List<String> readTextFromFile(final String aFilepath) {
 		List<String> aList = new ArrayList<String>();
 		try {
-			InputStream anInputStream = aURL.openStream();
-			InputStreamReader anInputStreamReader = new InputStreamReader(anInputStream);
-			BufferedReader instanceOfBufferedReader = new BufferedReader(anInputStreamReader);
+			BufferedReader instanceOfBufferedReader = new BufferedReader(new FileReader(new File(aFilepath)));
 			Stream<String> aStream = instanceOfBufferedReader.lines();
 			aStream.forEach(aLine -> {
 				aList.add(aLine);
@@ -51,6 +103,34 @@ public class IO {
 			e.printStackTrace();
 		}
 		return aList;
+	}
+
+	/**
+	* URLからファイルを読み込み行をリストとして返却する
+	* @params URL ダウンロードリンク
+	* @return 行を格納したリスト
+	*/
+	public List<String> readTextFromURL(final String aString) {
+		List<String> aList = new ArrayList<String>();
+		try {
+			final URL anURL = new URL(aString);
+			BufferedReader instanceOfBufferedReader = new BufferedReader(new InputStreamReader(anURL.openStream()));
+			instanceOfBufferedReader.lines().forEach((aLine) -> {
+				aList.add(aLine);
+			});
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return aList;
+	}
+
+	/**
+	* CSVのファイルパスをセットする
+	* @param aFile ファイルオブジェクト
+	*/
+	public void setCSVFilePath(File aFile) {
+		this.aCSVFilePath = aFile.getPath();
+		return;
 	}
 
 	/**
@@ -70,17 +150,27 @@ public class IO {
 	}
 
 	/**
+	* 画像を書き出す
+	*/
+	public void writeImage(BufferedImage anBufferedImage, String aString) {
+		String anExtension = aString.substring(aString.lastIndexOf(".") + 1); // 最後のドットより後、すなわち拡張子を切り分ける
+		try {
+			ImageIO.write(anBufferedImage, anExtension, new File(aString));
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return;
+	}
+
+	/**
 	* 書き込み処理
 	* @params List<String> CSVのリスト
 	* @params String ベースディレクトリ
+	* @return File csvファイルパス
 	*/
-	public void writeText(final List<String> listOfCSV, String baseDirectory) {
-		String baseName = this.table.aClassAttribute().toString();
-		File aDestinationDirectory = new File(baseDirectory, baseName.concat("_Java")); // デスクトップにディレクトリ作成
-		aDestinationDirectory.mkdir();
+	public File writeText(final List<String> listOfCSV, String baseDirectory) {
+		File aTargetFile = new File(baseDirectory);
 		try {
-			File aTargetFile = new File(aDestinationDirectory, baseName.concat(".csv"));
-			System.out.println(aTargetFile.getPath());
 			BufferedWriter instanceOfBufferedWriter = new BufferedWriter(new FileWriter(aTargetFile));
 			listOfCSV.forEach((aLine) -> {
 				try {
@@ -93,7 +183,10 @@ public class IO {
 			instanceOfBufferedWriter.close();
 		} catch(IOException e) {
 			e.printStackTrace();
+		} catch(NullPointerException e) {
+			e.printStackTrace();
 		}
+		return aTargetFile;
 	}
 
 }
