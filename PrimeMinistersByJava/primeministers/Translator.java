@@ -24,6 +24,8 @@ public class Translator {
 	public void execute() {
 		Downloader aDownloader = new Downloader(this.inputTable);
 		aDownloader.perform();
+		System.out.println(this.inputTable.tuples());
+		this.translate();
 	}
 
 	// public static void perform(Object aClassAttribute) {

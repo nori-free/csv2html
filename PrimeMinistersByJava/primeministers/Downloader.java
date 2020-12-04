@@ -112,7 +112,6 @@ public class Downloader extends IO {
 		splittedList.forEach(aLine -> {
 			new Condition(() -> anAtomicInteger.getAndIncrement() != 0).
 			ifTrue(() -> {
-				Tuple aTuple = new Tuple(aLine);
 				super.table().add(new Tuple(aLine));
 			});
 		});
