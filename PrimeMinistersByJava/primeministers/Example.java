@@ -10,7 +10,6 @@ public class Example {
 
 	public static void main(String... args) {
 		EnumSet.allOf(Mode.class).forEach(anItem -> {
-			// Translator.perform(anItem);
 			Translator aTranslator = new Translator(anItem);
 			aTranslator.execute();
 		});

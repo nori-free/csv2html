@@ -18,7 +18,6 @@ public class Downloader extends IO {
 	/**
 	* CSVの参照先であるベースのURL
 	*/
-	// private URL url;
 	private String url;
 
 	/**
@@ -82,8 +81,8 @@ public class Downloader extends IO {
 					Attributes.className(), item).getPath()
 				);
 				System.out.printf("[Downloading...] %s -> %s%n", urlOfItem, directoryOfItem);
-				BufferedImage anBufferedImage = IO.readImageFromURL(urlOfItem);
-				super.writeImage(anBufferedImage, directoryOfItem);
+				BufferedImage aBufferedImage = IO.readImageFromURL(urlOfItem);
+				super.writeImage(aBufferedImage, directoryOfItem);
 				System.out.printf("complete!!%n%n");
 			});
 		});
@@ -97,7 +96,7 @@ public class Downloader extends IO {
 		return;
 	}
 
-	public void perform() {
+	public List<Tuple> perform() {
 		// プロジェクトルートディレクトリの作成
 		File desktopPath = new File(System.getProperty("user.home"), "Desktop");
 		File aDestinationDirectory = new File(desktopPath, super.table().aClassAttribute().toString().concat("_Java")); // デスクトップにディレクトリ作成
@@ -112,11 +111,13 @@ public class Downloader extends IO {
 		splittedList.forEach(aLine -> {
 			new Condition(() -> anAtomicInteger.getAndIncrement() != 0).
 			ifTrue(() -> {
+				Tuple aTuple = new Tuple(aLine);
 				super.table().add(new Tuple(aLine));
 			});
 		});
 		this.downloadImages();
 		this.downloadThumbnails();
+		return super.tuples();
 	}
 
 }

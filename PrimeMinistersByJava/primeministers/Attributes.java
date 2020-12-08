@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.stream.Stream;
 
 public class Attributes {
 
@@ -19,6 +20,11 @@ public class Attributes {
 	* クラス名
 	*/
 	private static String aClassName = null;
+
+	/**
+	* I/Oモード
+	*/
+	private String mode = null;
 
 	/**
 	* 属性リストのキー群を記憶する（インスタンス変数）フィールド。
@@ -50,16 +56,16 @@ public class Attributes {
 	* 総理大臣出力テーブルのカラム情報の列挙型
 	*/
 	private static enum PrimeMinistersOutputEnum {
-		No,
-		Order,
-		Name,
-		Lana,
-		Period,
-		Days,
-		School,
-		Party,
-		Place,
-		Image
+		人目,
+		代,
+		氏名,
+		ふりがな,
+		在位期間,
+		在位日数,
+		出身校,
+		政党,
+		出身地,
+		画像
 	}
 
 	/**
@@ -82,16 +88,16 @@ public class Attributes {
 	* 徳川幕府出力テーブルのカラム情報の列挙型
 	*/
 	private static enum TokugawaShogunateOutputEnum {
-		No,
-		Name,
-		Kana,
-		Period,
-		Days,
-		Family,
-		Rank,
-		Image,
-		Former,
-		Cemetery
+		代,
+		氏名,
+		ふりがな,
+		在位期間,
+		在位日数,
+		出身家,
+		官位,
+		画像,
+		院号,
+		墓所
 	}
 
 	/**
@@ -102,6 +108,7 @@ public class Attributes {
 	public Attributes(Object aClassAttribute, String aString) {
 		this.keys = new ArrayList<String>();
 		this.names = new ArrayList<String>();
+		this.mode = aString;
 		// enumのクラス名を記憶させる
 		Attributes.aClassName = aClassAttribute.toString();
 
@@ -109,8 +116,8 @@ public class Attributes {
 		Condition isPrimeMinister = this.isPrimeMinisters();
 		Condition isTokugawa = this.isTokugawaShogunate();
 
-		isPrimeMinister.ifTrue(() -> this.primeMinistersConstructor(aString));
-		isTokugawa.ifTrue(() -> this.tokugawaShogunateConstructor(aString));
+		isPrimeMinister.ifTrue(() -> this.primeMinistersConstructor());
+		isTokugawa.ifTrue(() -> this.tokugawaShogunateConstructor());
 	}
 
 	/**
@@ -134,6 +141,46 @@ public class Attributes {
 	*/
 	public String baseDirectory() {
 		return Attributes.baseDirectory;
+	}
+
+	public List<String> getEnum() {
+		List<String> aList = new ArrayList<>();
+		System.out.println(this.mode);
+		this.isPrimeMinisters()
+		.ifTrue(() -> {
+			this.isInputMode()
+			.ifTrue(() -> {
+				// 総理大臣 | 入力
+				Arrays.asList(Stream.of(PrimeMinistersInputEnum.values()).map(PrimeMinistersInputEnum::name).toArray(String[]::new)).forEach(aString -> {
+					aList.add(aString);
+				});
+			});
+			this.isOutputMode()
+			.ifTrue(() -> {
+				// 総理大臣 | 出力
+				Arrays.asList(Stream.of(PrimeMinistersOutputEnum.values()).map(PrimeMinistersOutputEnum::name).toArray(String[]::new)).forEach(aString -> {
+					aList.add(aString);
+				});
+			});
+		});
+		this.isTokugawaShogunate()
+		.ifTrue(() -> {
+			this.isInputMode()
+			.ifTrue(() -> {
+				// 徳川幕府 | 入力
+				Arrays.asList(Stream.of(TokugawaShogunateInputEnum.values()).map(TokugawaShogunateInputEnum::name).toArray(String[]::new)).forEach(aString -> {
+					aList.add(aString);
+				});
+			});
+			this.isOutputMode()
+			.ifTrue(() -> {
+				// 徳川幕府 | 出力
+				Arrays.asList(Stream.of(TokugawaShogunateOutputEnum.values()).map(TokugawaShogunateOutputEnum::name).toArray(String[]::new)).forEach(aString -> {
+					aList.add(aString);
+				});
+			});
+		});
+		return aList;
 	}
 
 	/**
@@ -240,6 +287,22 @@ public class Attributes {
 	}
 
 	/**
+	* 入力モードか判定する
+	* @return Condition 条件分岐オブジェクト
+	*/
+	private Condition isInputMode() {
+		return new Condition(() -> Boolean.valueOf(this.mode.compareTo("input") == 0));
+	}
+
+	/**
+	* 出力モードか判定する
+	* @return Condition 条件分岐オブジェクト
+	*/
+	private Condition isOutputMode() {
+		return new Condition(() -> Boolean.valueOf(this.mode.compareTo("output") == 0));
+	}
+
+	/**
 	* 総理大臣モードか判定する
 	* @return Condition 条件分岐オブジェクト
 	*/
@@ -255,16 +318,20 @@ public class Attributes {
 		return new Condition(() -> Attributes.aClassName.compareTo("TokugawaShogunate") == 0);
 	}
 
+	public List<String> keys() {
+		return this.keys;
+	}
+
 	/**
 	* 総理大臣の場合のコンストラクタの続き：インデックスの作成など
 	*/
-	private void primeMinistersConstructor(String aString) {
-		new Condition(() -> Boolean.valueOf(aString.compareTo("input") == 0))
+	private void primeMinistersConstructor() {
+		this.isInputMode()
 		.ifTrue(() -> {
 			System.out.println("総理大臣 input");
 			Arrays.stream(PrimeMinistersInputEnum.values()).forEach(aValue -> this.addToTheList(aValue.toString()));
 		});
-		new Condition(() -> Boolean.valueOf(aString.compareTo("output") == 0))
+		this.isOutputMode()
 		.ifTrue(() -> {
 			System.out.println("総理大臣 output");
 			Arrays.stream(PrimeMinistersOutputEnum.values()).forEach(aValue -> this.addToTheList(aValue.toString()));
@@ -291,13 +358,13 @@ public class Attributes {
 	/**
 	* 徳川の場合のコンストラクタの続き：インデックスの作成など
 	*/
-	private void tokugawaShogunateConstructor(String aString) {
-		new Condition(() -> Boolean.valueOf(aString.compareTo("input") == 0))
+	private void tokugawaShogunateConstructor() {
+		this.isInputMode()
 		.ifTrue(() -> {
 			System.out.println("徳川将軍 input");
 			Arrays.stream(TokugawaShogunateInputEnum.values()).forEach(aValue -> this.addToTheList(aValue.toString()));
 		});
-		new Condition(() -> Boolean.valueOf(aString.compareTo("output") == 0))
+		this.isOutputMode()
 		.ifTrue(() -> {
 			System.out.println("徳川将軍 output");
 			Arrays.stream(TokugawaShogunateOutputEnum.values()).forEach(aValue -> this.addToTheList(aValue.toString()));

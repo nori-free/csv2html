@@ -29,7 +29,6 @@ public class Table {
 	}
 
 	public void add(final Tuple aTuple) {
-		// System.out.println(aTuple.values());
 		this.tuples().add(aTuple);
 	}
 
@@ -41,17 +40,9 @@ public class Table {
 		return this.attributes;
 	}
 
-	public void attributes(final Attributes instanceOfAttributes) {
-		return;
-	}
-
 	public List<BufferedImage> images() {
 		return new ArrayList<BufferedImage>();
 	}
-
-	// private BufferedImage images() {
-	// 	return this.images;
-	// }
 
 	public List<BufferedImage> thumbnails() {
 		return new ArrayList<BufferedImage>();

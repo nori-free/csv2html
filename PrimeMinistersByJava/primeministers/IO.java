@@ -61,13 +61,13 @@ public class IO extends Object {
 	* @return BufferedImage
 	*/
 	public static BufferedImage readImageFromURL( URL anURL) {
-		BufferedImage anBufferedImage = null;
+		BufferedImage aBufferedImage = null;
 		try {
-			anBufferedImage = ImageIO.read(anURL);
+			aBufferedImage = ImageIO.read(anURL);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		return anBufferedImage;
+		return aBufferedImage;
 	}
 
 	/**
@@ -152,10 +152,10 @@ public class IO extends Object {
 	/**
 	* 画像を書き出す
 	*/
-	public void writeImage(BufferedImage anBufferedImage, String aString) {
+	public void writeImage(BufferedImage aBufferedImage, String aString) {
 		String anExtension = aString.substring(aString.lastIndexOf(".") + 1); // 最後のドットより後、すなわち拡張子を切り分ける
 		try {
-			ImageIO.write(anBufferedImage, anExtension, new File(aString));
+			ImageIO.write(aBufferedImage, anExtension, new File(aString));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
