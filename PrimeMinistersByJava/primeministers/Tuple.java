@@ -15,8 +15,8 @@ public class Tuple {
         return this.attributes;
     }
 
-    public String toString() {
-        return "";
+	public void add(int index, String aString) {
+        this.values().add(index, aString);
     }
 
     public List<String> values() {

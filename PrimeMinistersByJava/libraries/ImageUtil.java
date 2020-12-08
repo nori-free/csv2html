@@ -10,6 +10,16 @@ public class ImageUtil {
 	private static String filename;
 
 	/**
+	* 拡張子を削除
+	* @ param ファイル名
+	* @return 拡張子を除いたファイル名
+	*/
+	public static String currentFilename(String aString) {
+		String[] splittedString = aString.split("/");
+		return splittedString[splittedString.length - 1];
+	}
+
+	/**
 	* ファイル名を取得する
 	* @return String ファイル名
 	*/
@@ -94,6 +104,16 @@ public class ImageUtil {
 	*/
 	private static boolean isTIFF() {
 		return ImageUtil.filename().endsWith("tiff");
+	}
+
+	/**
+	* 拡張子を削除
+	* @ param ファイル名
+	* @return 拡張子を除いたファイル名
+	*/
+	public static String remoteExtension(String aString) {
+		// isImageFile()で画像ファイルと信頼されているため、lastIndexOfから-1が帰ってこないものとしている
+		return aString.substring(0, aString.lastIndexOf("."));
 	}
 
 	/**
