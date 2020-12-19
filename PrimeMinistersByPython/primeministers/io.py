@@ -32,14 +32,12 @@ class IO:
 		return
 
 	def write_image(self, an_url, a_file):
-		print(a_file)
 		with urllib.request.urlopen(an_url) as an_origin_file:
 			with open(a_file, mode='wb') as a_local_file:
 				a_local_file.write(an_origin_file.read())
 		return a_file
 
 	def write_text(self, list_of_csv, base_directory):
-		print(base_directory)
 		with open(base_directory, mode='w') as a_target_file:
 			for a_line in list_of_csv:
 				print(a_line)

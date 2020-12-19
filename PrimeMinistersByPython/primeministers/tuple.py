@@ -7,7 +7,7 @@ class Tuple:
 	# 	return self.attributes
 
 	def add(self, an_index, a_string):
-		self.get_values().add(an_index, a_string)
+		self.get_values().insert(an_index, a_string)
 
 	def get_values_with_index(self, an_index):
 		return self.get_values()[an_index]

@@ -44,7 +44,6 @@ class Downloader(IO):
 		for a_string in map(lambda item: item.get_values_with_index(index_of_pictures), self.get_tuples()):
 			a_file = os.path.join(Attributes.get_base_directory(), a_string)
 			url_of_item = os.path.join('{0}{1}'.format(self.get_table().get_attributes().base_url(), Attributes.get_class_name()), a_string)
-			print(url_of_item)
 			print('[Downloading...] {0} -> {1}'.format(url_of_item, a_file))
 			self.write_image(url_of_item, a_file)
 			print('complete!!\n')

@@ -90,54 +90,6 @@ class Attributes:
 		self.keys = []
 		self.names = []
 		self.mode = a_string
-		self.Prime_ministers_input_enum = Enum('Prime_ministers_input_enum', [
-			'No',
-			'Order',
-			'Name',
-			'Kana',
-			'Period',
-			'School',
-			'Party',
-			'Place',
-			'Image',
-			'Thumbnail'
-		], start=0)
-		self.Prime_ministers_output_enum = Enum('Prime_ministers_output_enum', [
-			'人目',
-			'代',
-			'氏名',
-			'ふりがな',
-			'在位期間',
-			'在位日数',
-			'出身校',
-			'政党',
-			'出身地',
-			'画像'
-			], start=0)
-		self.Tokugawa_shogunate_input_enum = Enum('Tokugawa_shogunate_input_enum', [
-			'No',
-			'Name',
-			'Kana',
-			'Period',
-			'Family',
-			'Rank',
-			'Image',
-			'Thumbnail',
-			'Former',
-			'Cemetery'
-		], start=0)
-		self.Tokugawa_shogunate_output_enum = Enum('Tokugawa_shogunate_output_enum', [
-			'代',
-			'氏名',
-			'ふりがな',
-			'在位期間',
-			'在位日数',
-			'出身家',
-			'官位',
-			'画像',
-			'院号',
-			'墓所'
-		], start=0)
 		Attributes.a_class_name = a_class_name
 		is_primeminister = self.is_primeministers()
 		is_tokugawa = self.is_tokugawa_shogunate()
@@ -165,10 +117,24 @@ class Attributes:
 		Attributes.base_directory = None
 		return
 
+	def get_enum(self):
+		the_enum = lambda: None
+		print(self.is_primeministers().bool_value(), self.is_input_mode().bool_value())
+		the_enum = Condition(self.is_primeministers().bool_value() and self.is_input_mode().bool_value()).if_then_else_with_returns(lambda: PrimeMinistersInputEnum, lambda: the_enum)
+		the_enum = Condition(self.is_primeministers().bool_value() and self.is_output_mode().bool_value()).if_then_else_with_returns(lambda: PrimeMinistersOutputEnum, lambda: the_enum)
+		the_enum = Condition(self.is_tokugawa_shogunate().bool_value() and self.is_input_mode().bool_value()).if_then_else_with_returns(lambda: TokugawaShogunateInputEnum, lambda: the_enum)
+		the_enum = Condition(self.is_tokugawa_shogunate().bool_value() and self.is_output_mode().bool_value()).if_then_else_with_returns(lambda: TokugawaShogunateOutputEnum, lambda: the_enum)
+		print([an_item.name for an_item in the_enum])
+		return the_enum
+
 	def index_of(self, a_string):
 		# print(self.keys, a_string)
 		# 重複していないと信頼
-		return self.keys.index(a_string)
+		return Condition(a_string in self.keys).if_then_else_with_returns(
+			lambda: self.keys.index(a_string),
+			lambda: -1
+		)
+		# return self.keys.index(a_string)
 
 	def index_of_days(self):
 		return self.index_of('Days')
@@ -235,5 +201,5 @@ class Attributes:
 
 	def tokugawa_shogunate_constructor(self):
 		self.is_input_mode().if_true(lambda: [print("徳川幕府 input"), self.set_keys(TokugawaShogunateInputEnum)])
-		self.is_output_mode().if_true(lambda: [print("徳川幕府 output"), self.set_keys(self.Tokugawa_shogunate_output_enum)])
+		self.is_output_mode().if_true(lambda: [print("徳川幕府 output"), self.set_keys(TokugawaShogunateOutputEnum)])
 		return

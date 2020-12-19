@@ -15,8 +15,11 @@ class Condition:
 		コンストラクタ
 		"""
 		self.a_condition = None
-		self.a_condition = a_got_condition
+		self.a_condition = bool(a_got_condition)
 		return
+	
+	def bool_value(self):
+		return bool(self.a_condition)
 
 	def if_false(self, a_lambda):
 		"""
