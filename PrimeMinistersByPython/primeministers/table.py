@@ -22,9 +22,6 @@ class Table:
 	def get_attributes(self):
 		return self.attributes
 
-	# def images(self):
-	# 	return
-
 	def set_tuples(self, tuples):
 		self.tuples = tuples
 

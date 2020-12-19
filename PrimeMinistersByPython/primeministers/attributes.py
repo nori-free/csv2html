@@ -119,22 +119,18 @@ class Attributes:
 
 	def get_enum(self):
 		the_enum = lambda: None
-		print(self.is_primeministers().bool_value(), self.is_input_mode().bool_value())
 		the_enum = Condition(self.is_primeministers().bool_value() and self.is_input_mode().bool_value()).if_then_else_with_returns(lambda: PrimeMinistersInputEnum, lambda: the_enum)
 		the_enum = Condition(self.is_primeministers().bool_value() and self.is_output_mode().bool_value()).if_then_else_with_returns(lambda: PrimeMinistersOutputEnum, lambda: the_enum)
 		the_enum = Condition(self.is_tokugawa_shogunate().bool_value() and self.is_input_mode().bool_value()).if_then_else_with_returns(lambda: TokugawaShogunateInputEnum, lambda: the_enum)
 		the_enum = Condition(self.is_tokugawa_shogunate().bool_value() and self.is_output_mode().bool_value()).if_then_else_with_returns(lambda: TokugawaShogunateOutputEnum, lambda: the_enum)
-		print([an_item.name for an_item in the_enum])
 		return the_enum
 
 	def index_of(self, a_string):
-		# print(self.keys, a_string)
 		# 重複していないと信頼
 		return Condition(a_string in self.keys).if_then_else_with_returns(
 			lambda: self.keys.index(a_string),
 			lambda: -1
 		)
-		# return self.keys.index(a_string)
 
 	def index_of_days(self):
 		return self.index_of('Days')
@@ -181,14 +177,6 @@ class Attributes:
 		is_primeminister.if_true(lambda: self.set_base_directory_with_filepath(os.path.join(self.desktop_path(), "PrimeMinisters_Python")))
 		is_tokugawa.if_true(lambda: self.set_base_directory_with_filepath(os.path.join(self.desktop_path(), "TokugawaShogunate_Python")))
 		return
-
-	# def set_base_directory(self):
-	# 	is_primeminister = self.is_primeministers()
-	# 	is_tokugawa = self.is_tokugawa_shogunate()
-	#
-	# 	is_primeminister.if_true()
-	# 	is_tokugawa.if_true()
-	# 		pass
 
 	def set_base_directory_with_filepath(self, a_path):
 		Attributes.base_directory = a_path

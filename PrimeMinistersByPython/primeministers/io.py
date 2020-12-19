@@ -40,6 +40,5 @@ class IO:
 	def write_text(self, list_of_csv, base_directory):
 		with open(base_directory, mode='w') as a_target_file:
 			for a_line in list_of_csv:
-				print(a_line)
 				a_target_file.write('{}\n'.format(a_line))
 		return base_directory

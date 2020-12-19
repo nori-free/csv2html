@@ -8,7 +8,4 @@ class Reader(IO):
 		return
 
 	def perform(self):
-		# print(self.read_text_from_file(self.get_csv_filepath()))
-		# for a_line in self.read_text_from_file(self.get_csv_filepath()):
-		# 	print(a_line.split(','))
 		return [ a_line.split(',') for a_line in self.read_text_from_file(self.get_csv_filepath())]

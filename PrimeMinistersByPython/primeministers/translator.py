@@ -35,7 +35,6 @@ class Translator:
 		a_downloader = Downloader(self.input_table)
 		tuples = a_downloader.perform()
 		header = [an_item.name for an_item in self.output_table.get_attributes().get_enum()]
-		print(header)
 		tuples.insert(0, Tuple(header))
 		a_writer = Writer(self.output_table)
 		is_image = lambda a_column: str(a_column).startswith('images')
@@ -70,12 +69,10 @@ class Translator:
 			)
 			self.output_table.add(Tuple(formatted_list))
 		a_writer.write(self.output_table)
-		# print(formatted_list)
 		return
 	
 	def get_datetime(self, dates, get_calendar):
 		year, month, day = tuple(map(lambda a_string: int(a_string), get_calendar(lambda a_string: a_string != '', dates[1])))
-		# year, month, day = a_tuple
 		return datetime.datetime(year, month, day)
 
 	def make_table_header(self, formatted_list, a_tuple):

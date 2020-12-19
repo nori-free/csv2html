@@ -3,9 +3,6 @@ class Tuple:
 		self.values = value_collection
 		return
 
-	# def get_attributes(self):
-	# 	return self.attributes
-
 	def add(self, an_index, a_string):
 		self.get_values().insert(an_index, a_string)
 

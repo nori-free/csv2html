@@ -51,7 +51,7 @@ class Condition:
 		"""
 		条件が正のときに実行する処理と偽のときに実行する処理
 		"""
-		[another_lambda, a_lambda][self.a_condition]()
+		[another_lambda, a_lambda][int(self.a_condition)]()
 
 	def if_then_else_with_returns(self, a_lambda, another_lambda):
 		"""
